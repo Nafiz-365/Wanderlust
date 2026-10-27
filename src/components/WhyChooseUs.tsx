@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Card } from "@/components/ui/card";
 
 const features = [
     {
@@ -23,8 +24,8 @@ const features = [
 
 export function WhyChooseUs() {
     return (
-        <section className="bg-[#edfcff] py-16 sm:py-20 lg:py-[120px]">
-            <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-20">
+        <section className="bg-[#edfcff] py-16 sm:py-20 lg:py-30">
+            <div className="mx-auto w-full max-w-360 px-4 sm:px-8 lg:px-20">
                 <div className="flex flex-col items-center gap-2 text-center">
                     <h2 className="text-4xl leading-none font-medium tracking-[-0.03em] text-[#0c0b0b] sm:text-5xl lg:text-[60px]">
                         Why Choose Wanderlust
@@ -35,17 +36,21 @@ export function WhyChooseUs() {
                 </div>
                 <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {features.map((feature) => (
-                        <div
+                        <Card
                             key={feature.title}
-                            className="flex flex-col gap-6 bg-white p-6 shadow-[0_1px_1px_0_rgba(0,0,0,0.1)] sm:p-8 lg:p-10"
+                            className="rounded-none bg-white px-6 py-6 shadow-[0_1px_1px_0_rgba(0,0,0,0.1)] ring-0 sm:px-8 sm:py-8 lg:px-10 lg:py-10 [--card-spacing:--spacing(6)]"
                         >
-                            <Image
-                                src={feature.icon}
-                                alt=""
-                                width={48}
-                                height={48}
-                                className="size-12"
-                            />
+                            {/* Wrapper keeps the icon from matching Card's
+                                `has-[>img:first-child]` padding rule */}
+                            <div>
+                                <Image
+                                    src={feature.icon}
+                                    alt=""
+                                    width={48}
+                                    height={48}
+                                    className="size-12 rounded-none!"
+                                />
+                            </div>
                             <div className="flex flex-col gap-4">
                                 <h3 className="text-2xl leading-none font-normal tracking-[-0.015em] text-[#0c0b0b] xl:text-[32px]">
                                     {feature.title}
@@ -54,7 +59,7 @@ export function WhyChooseUs() {
                                     {feature.description}
                                 </p>
                             </div>
-                        </div>
+                        </Card>
                     ))}
                 </div>
             </div>

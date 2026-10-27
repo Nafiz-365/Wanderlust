@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const searchFields = [
     {
@@ -26,7 +27,7 @@ const searchFields = [
 
 export function Banner() {
     return (
-        <section className="relative isolate -mt-22 flex min-h-[746px] w-full flex-col overflow-hidden text-white">
+        <section className="relative isolate -mt-22 flex min-h-186 w-full flex-col overflow-hidden text-white">
             {/* Background image — the exported PNG already includes the design's
                 dark overlay (black 50% + bottom gradient), so no extra layer. */}
             <Image
@@ -43,7 +44,7 @@ export function Banner() {
 
             {/* Hero content — design: y190–570, centered between navbar and search bar */}
             <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-5 text-center">
-                <div className="flex max-w-[662px] flex-col items-center gap-3">
+                <div className="flex max-w-165 flex-col items-center gap-3">
                     <h1 className="text-5xl leading-none font-normal tracking-[-0.03em] capitalize sm:text-6xl md:text-7xl lg:text-[104px]">
                         Discover Your
                         <br />
@@ -57,21 +58,25 @@ export function Banner() {
                     </p>
                 </div>
 
+                {/* Design CTAs: 56px tall, square corners, 24px icon gap,
+                    16px uppercase label — overrides of the shadcn Button. */}
                 <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-                    <a
-                        href="/destinations"
-                        className="flex min-h-14 w-full items-center justify-center gap-6 bg-[#15a1bf] px-6 text-base font-medium tracking-[0.08px] uppercase transition-colors hover:bg-[#128da5] sm:w-auto"
+                    <Button
+                        render={<a href="/destinations" />}
+                        nativeButton={false}
+                        className="h-14 w-full gap-6 rounded-none bg-[#15a1bf] px-6 text-base tracking-[0.08px] uppercase text-white hover:bg-[#128da5] sm:w-auto"
                     >
                         Explore Now
                         <ArrowRight className="size-5" />
-                    </a>
+                    </Button>
 
-                    <a
-                        href="/destinations"
-                        className="flex min-h-14 w-full items-center justify-center bg-white/40 px-6 text-base font-medium tracking-[0.08px] uppercase transition-colors hover:bg-white/55 sm:w-auto"
+                    <Button
+                        render={<a href="/destinations" />}
+                        nativeButton={false}
+                        className="h-14 w-full rounded-none bg-white/40 px-6 text-base tracking-[0.08px] uppercase text-white hover:bg-white/55 sm:w-auto"
                     >
                         View Destination
-                    </a>
+                    </Button>
                 </div>
             </div>
 
@@ -85,7 +90,7 @@ export function Banner() {
                 {searchFields.map((field) => (
                     <div
                         key={field.id}
-                        className="flex min-h-[74px] flex-col justify-center gap-2 px-4 py-4 md:px-6"
+                        className="flex min-h-18 flex-col justify-center gap-2 px-4 py-4 md:px-6"
                     >
                         <label
                             htmlFor={field.id}
@@ -103,12 +108,12 @@ export function Banner() {
                     </div>
                 ))}
 
-                <button
+                <Button
                     type="submit"
-                    className="col-span-2 flex min-h-[74px] items-center justify-center bg-[#15a1bf] text-xl font-semibold text-white transition-colors hover:bg-[#128da5] md:col-span-1"
+                    className="col-span-2 min-h-18 w-full rounded-none bg-[#15a1bf] text-xl font-semibold text-white hover:bg-[#128da5] md:col-span-1"
                 >
                     Search
-                </button>
+                </Button>
             </form>
         </section>
     );

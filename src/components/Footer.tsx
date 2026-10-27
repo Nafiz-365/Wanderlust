@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 const quickLinks = [
     { label: "Home", href: "/" },
@@ -55,8 +56,8 @@ const linkClass = "transition-colors hover:text-[#15a1bf]";
 
 export function Footer() {
     return (
-        <footer className="bg-[#0c0b0b] pt-16 pb-8 sm:pt-20 lg:pt-[120px]">
-            <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-20">
+        <footer className="bg-[#0c0b0b] pt-16 pb-8 sm:pt-20 lg:pt-30">
+            <div className="mx-auto w-full max-w-360 px-4 sm:px-8 lg:px-20">
                 <div className="flex flex-col gap-4">
                     <Image
                         src="/images/Wanderlast-1.png"
@@ -64,15 +65,15 @@ export function Footer() {
                         width={542}
                         height={80}
                         priority={false}
-                        className="h-auto w-full max-w-[542px]"
+                        className="h-auto w-full max-w-135"
                     />
                     <p className="text-xl leading-[1.6] text-[#b6b6b6]">
-                        Your gateway to extraordinary travel
-                        experiences around the world.
+                        Your gateway to extraordinary travel experiences around
+                        the world.
                     </p>
                 </div>
 
-                <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:mt-[60px] lg:grid-cols-[400px_1fr_1fr_1fr] lg:gap-x-[60px] lg:gap-y-0">
+                <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:mt-15 lg:grid-cols-[400px_1fr_1fr_1fr] lg:gap-x-15 lg:gap-y-0">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             <h2 className={columnTitleClass}>Newsletter</h2>
@@ -90,10 +91,12 @@ export function Footer() {
                                 className="h-12 w-full rounded-none bg-[#373737] px-4 pr-12 text-lg text-white placeholder:text-[#b6b6b6] focus:outline-2 focus:outline-[#15a1bf]"
                                 suppressHydrationWarning
                             />
-                            <button
+                            <Button
                                 type="button"
+                                variant="ghost"
+                                size="icon"
                                 aria-label="Subscribe"
-                                className="absolute top-1/2 right-4 -translate-y-1/2 text-white transition-colors hover:text-[#15a1bf]"
+                                className="absolute top-1/2 right-4 size-6 -translate-y-1/2 rounded-none text-white hover:bg-transparent hover:text-[#15a1bf]"
                             >
                                 <svg
                                     viewBox="0 0 24 24"
@@ -103,7 +106,7 @@ export function Footer() {
                                 >
                                     <path d={arrowUpRightPath} />
                                 </svg>
-                            </button>
+                            </Button>
                         </div>
                     </div>
 

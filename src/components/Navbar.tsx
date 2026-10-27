@@ -68,7 +68,9 @@ export function Navbar() {
                     >
                         {link.icon && <UserRound className="size-4" />}
                         <span
-                            className={link.icon ? "hidden sm:inline" : undefined}
+                            className={
+                                link.icon ? "hidden sm:inline" : undefined
+                            }
                         >
                             {link.label}
                         </span>

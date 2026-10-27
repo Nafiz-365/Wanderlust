@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const josefinSans = Josefin_Sans({
     subsets: ["latin"],
@@ -20,7 +20,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
         <html
             lang="en"
-            className={cn("h-full", "antialiased", josefinSans.className, "font-sans", geist.variable)}
+            className={cn(
+                "h-full",
+                "antialiased",
+                josefinSans.className,
+                "font-sans",
+                geist.variable,
+            )}
         >
             <body className="min-h-full flex flex-col pt-22">
                 {/* Floating navbar (design band: 88px). The homepage banner
