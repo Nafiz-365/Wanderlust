@@ -1,4 +1,8 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -15,20 +19,23 @@ const rightLinks = [
     { href: "/signup", label: "Sign Up", icon: false },
 ];
 
-export function Navbar({ active = "/" }: { active?: string } = {}) {
+const linkClass =
+    "shrink-0 text-sm font-medium tracking-[0.08px] transition-colors hover:text-[#15a1bf] lg:text-base";
+
+export function Navbar() {
+    const pathname = usePathname();
+
     return (
-        <nav className="grid min-h-14 w-full grid-cols-[1fr_auto_1fr] items-center gap-3 bg-white px-4 py-3 text-black sm:px-6">
-            {/* Left navigation */}
-            <div className="flex min-w-0 items-center gap-3 overflow-x-auto whitespace-nowrap text-xs font-medium sm:gap-6 sm:text-sm">
+        <nav className="flex min-h-14 w-full items-center justify-between gap-3 whitespace-nowrap bg-white px-6 py-4 text-[#0c0b0b]">
+            {/* Left navigation — design gap: 32px */}
+            <div className="flex min-w-0 shrink items-center gap-4 overflow-x-auto lg:gap-8">
                 {navLinks.map((link) => (
                     <Link
                         key={link.href}
                         href={link.href}
                         className={cn(
-                            "shrink-0 transition-colors hover:text-[#16a3bd]",
-                            active === link.href
-                                ? "text-[#16a3bd] underline underline-offset-4"
-                                : "text-black",
+                            linkClass,
+                            pathname === link.href && "text-[#15a1bf]",
                         )}
                     >
                         {link.label}
@@ -36,24 +43,33 @@ export function Navbar({ active = "/" }: { active?: string } = {}) {
                 ))}
             </div>
 
-            {/* Centered logo */}
-            <Link
-                href="/"
-                className="whitespace-nowrap text-lg font-bold tracking-tight text-[#16a3bd] sm:text-2xl md:text-[30px]"
-            >
-                Wanderlast
+            {/* Logo — centered in the space between the link groups (design x=713) */}
+            <Link href="/" className="shrink-0" aria-label="Wanderlust home">
+                <Image
+                    src="/images/Wanderlast.png"
+                    alt="Wanderlust"
+                    width={162}
+                    height={24}
+                    className="h-5 w-auto sm:h-6"
+                />
             </Link>
 
-            {/* Right navigation */}
-            <div className="flex min-w-0 items-center justify-end gap-3 whitespace-nowrap text-xs font-medium sm:gap-6 sm:text-sm">
+            {/* Right navigation — design gap: 32px, icon↔label gap: 4px */}
+            <div className="flex shrink-0 items-center justify-end gap-4 lg:gap-8">
                 {rightLinks.map((link) => (
                     <Link
                         key={link.href}
                         href={link.href}
-                        className="flex shrink-0 items-center gap-1.5 transition-colors hover:text-[#16a3bd]"
+                        className={cn(
+                            linkClass,
+                            "flex items-center gap-1",
+                            pathname === link.href && "text-[#15a1bf]",
+                        )}
                     >
                         {link.icon && <UserRound className="size-4" />}
-                        <span className={cn(link.icon && "hidden sm:inline")}>
+                        <span
+                            className={link.icon ? "hidden sm:inline" : undefined}
+                        >
                             {link.label}
                         </span>
                     </Link>

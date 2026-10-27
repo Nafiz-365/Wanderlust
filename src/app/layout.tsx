@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Josefin_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -20,7 +22,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             lang="en"
             className={cn("h-full", "antialiased", josefinSans.className, "font-sans", geist.variable)}
         >
-            <body className="min-h-full flex flex-col">{children}</body>
+            <body className="min-h-full flex flex-col pt-22">
+                {/* Floating navbar (design band: 88px). The homepage banner
+                    pulls itself up under it with -mt-22; every other page
+                    starts below it via this padding. */}
+                <div className="absolute inset-x-0 top-0 z-30 px-4 pt-4">
+                    <Navbar />
+                </div>
+                {children}
+                <Footer />
+            </body>
         </html>
     );
 }
