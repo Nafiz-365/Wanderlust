@@ -48,13 +48,41 @@ function Field({
 export function AddDestinationForm() {
     const [category, setCategory] = React.useState<string | null>(null);
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        // No backend yet — log the payload until a server action/API exists.
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const data = Object.fromEntries(
-            new FormData(event.currentTarget).entries(),
-        );
-        console.log("Add travel package:", { ...data, category });
+
+        const form = event.currentTarget;
+        const formData = new FormData(form);
+
+        const payload = {
+            name: formData.get("name"),
+            country: formData.get("country"),
+            category: category,
+            price: Number(formData.get("price")),
+            duration: formData.get("duration"),
+            departureDate: formData.get("departureDate"),
+            imageUrl: formData.get("imageUrl"),
+            description: formData.get("description"),
+        };
+
+        try {
+            const res = await fetch("http://localhost:8000/add-destination", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!res.ok) {
+                throw new Error(`Failed to add travel package: ${res.status}`);
+            }
+
+            const data = await res.json();
+            console.log("Destination added successfully:", data);
+        } catch (error) {
+            console.error("Error adding destination:", error);
+        }
     }
 
     return (

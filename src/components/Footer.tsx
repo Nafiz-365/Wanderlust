@@ -62,8 +62,8 @@ export function Footer() {
                     <Image
                         src="/images/Wanderlast-1.png"
                         alt="Wanderlust"
-                        width={542}
-                        height={80}
+                        width={500}
+                        height={500}
                         priority={false}
                         className="h-auto w-full max-w-135"
                     />

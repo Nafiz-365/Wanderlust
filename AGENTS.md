@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Wanderlust
 
-Next.js 16.4 (App Router), React 19, TypeScript, Tailwind CSS v4, shadcn/ui (base-nova style). All app code lives in `src`; routes live in `src/app`. Only the `/` route exists, but the homepage is complete: Banner, WhyChooseUs, Testimonials, CtaSection, Footer.
+Next.js 16.4 (App Router), React 19, TypeScript, Tailwind CSS v4, shadcn/ui (base-nova style). All app code lives in `src`; routes live in `src/app`. Built so far: `/` (complete homepage: Banner, WhyChooseUs, Testimonials, CtaSection, Footer) and `/add-destination` (admin form).
 
 ## Commands
 
@@ -33,15 +33,15 @@ Next.js 16.4 (App Router), React 19, TypeScript, Tailwind CSS v4, shadcn/ui (bas
 
 - Every section in `src/components/*.tsx` follows the same shell: container `mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-20`, section padding `py-16 sm:py-20 lg:py-[120px]`, h2 `text-4xl sm:text-5xl lg:text-[60px]` + `tracking-[-0.03em]`.
 - Palette: teal `#15a1bf` (primary + hover states), pale `#edfcff` (light section bg), ink `#0c0b0b`, grays `#6c696d`/`#b6b6b6`, card border `#eeeeee`. The design specifies no hover/focus states — adding teal hovers and `#128da5` button hovers is a deliberate, accepted deviation.
-- Design source of truth: `C:\Users\hp\Desktop\b14-wanderlust-resources\Wanderlust .penpot` (a ZIP of per-element JSON files with exact geometry/colors/typography; PNGs in `public/images/` are byte-identical to the design assets). Extract specs from it rather than eyeballing screenshots.
-- The design has a "Featured Destinations" section (page y746–1800) between Banner and WhyChooseUs that is not built yet.
-- `metadata.title` is still "Create Next App" (not yet updated).
+- Design source of truth: `C:\Users\hp\Desktop\b14-wanderlust-resources\Wanderlust .penpot` (a ZIP of per-element JSON files with exact geometry/colors/typography; PNGs in `public/images/` are byte-identical to the design assets). Extract specs from it rather than eyeballing screenshots. It contains every remaining screen as named top-level frames — e.g. `02_Destinations`, `04_Admin` (the add-destination page), `05_Destination Details`, plus delete/update/auth screens at x≈7800–15000. Dump a frame's children (id/x/y/w/h/fills/strokes/text runs) with PowerShell `ConvertFrom-Json` before building a page from it.
+- The design has a "Featured Destinations" section (homepage y746–1800, frame `Featured Destination`) between Banner and WhyChooseUs that is not built yet.
+- The root layout's `metadata.title` is still "Create Next App"; pages override it by exporting their own `metadata` (see `src/app/add-destination/page.tsx`).
 
 ## Stack notes that differ from defaults
 
 - Tailwind CSS v4, CSS-first: all imports/tokens in `src/app/globals.css`; there is no `tailwind.config.js` (`components.json` sets `tailwind.config: ""`). Path alias `@/*` → `./src/*`. Icons from lucide-react.
 - React Compiler is enabled (`reactCompiler: true` in `next.config.ts`): components are auto-memoized — do not add `React.memo`/`useMemo`/`useCallback` for performance. `"use client"` / `"use server"` directives still apply where needed.
-- shadcn/ui primitives in `src/components/ui` (`@/components/ui`) are built on **Base UI** (`@base-ui/react`) — not Radix; never add `@radix-ui/*` imports. Add components with `npx shadcn add <name>`.
+- shadcn/ui primitives in `src/components/ui` (`@/components/ui`) are built on **Base UI** (`@base-ui/react`) — not Radix; never add `@radix-ui/*` imports. 11 exist (button, card, carousel, input, label, select, textarea, alert-dialog, calendar, popover, separator); add more with `npx shadcn add <name>` — it silently skips files that are identical to the registry.
 
 ## shadcn/ui primitive gotchas (learned the hard way)
 
@@ -51,6 +51,9 @@ Next.js 16.4 (App Router), React 19, TypeScript, Tailwind CSS v4, shadcn/ui (bas
 - `Card` quirks: `has-[>img:first-child]:pt-0` strips top padding when an `img` is the first child (wrap images in a `<div>`), and `*:[img:first-child]`/`*:[img:last-child]` round image corners at any depth (neutralize with `rounded-none!` on the image). Gap and vertical padding come from `--card-spacing` — override via `[--card-spacing:--spacing(N)]` plus explicit `px-*`.
 - `ui/carousel.tsx` carries a scoped `eslint-disable-next-line react-hooks/set-state-in-effect` on its initial `onSelect(api)` call — it is required (embla emits `select` only when the index changes). If you regenerate the file with `npx shadcn add carousel`, re-add the suppression or lint fails.
 - `Testimonials.tsx` is `"use client"` because it uses `Carousel`; it also calls `useCarousel()` to render the design's custom 60px nav arrows in the header row instead of the built-in absolutely positioned chevrons.
+- Base UI `Select`: `onValueChange` emits `string | null` — type the state as `string | null`, not `string` or `""`. The trigger only shows `SelectValue placeholder` when the value is `null`/`undefined` (an empty string renders blank, not the placeholder). It joins native form submission via its `name` prop.
+- `Textarea` defaults to `field-sizing-content` (auto-grows with input) — add `field-sizing-fixed` (plus an explicit height) for fixed-height boxes like the design's 150px description field.
+- Form pages keep the pattern from `src/app/add-destination/page.tsx`: the route `page.tsx` stays a server component exporting `metadata`; interactive form logic lives in a separate `"use client"` component in `src/components/`.
 
 ## Gotchas
 
