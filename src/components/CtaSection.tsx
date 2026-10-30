@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function CtaSection() {
     return (
@@ -22,7 +23,7 @@ export function CtaSection() {
                     with us
                 </p>
                 <Button
-                    render={<a href="/destinations" />}
+                    render={<Link href="/destinations" />}
                     nativeButton={false}
                     className="mt-10 h-14 gap-6 rounded-none bg-white px-6 text-base tracking-[0.08px] font-medium text-[#0c0b0b] hover:bg-[#edfcff]"
                 >

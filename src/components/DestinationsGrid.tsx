@@ -3,7 +3,8 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Calendar, MapPin, Star } from "lucide-react";
+import { ArrowUpRight, Calendar, MapPin, RotateCcw, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
     Select,
@@ -20,9 +21,12 @@ export type Destination = {
     category: string;
     price: number;
     duration: string;
+    nights?: number;
     departureDate: string;
     imageUrl: string;
     description: string;
+    rating?: number;
+    reviews?: number;
 };
 
 type PriceRange = "all" | "under-1000" | "1000-2000" | "over-2000";
@@ -72,6 +76,15 @@ export function DestinationsGrid({
 
     const categories = [...new Set(destinations.map((d) => d.category))].sort();
 
+    const hasActiveFilters =
+        category !== null || priceRange !== null || sortBy !== null;
+
+    function clearFilters() {
+        setCategory(null);
+        setPriceRange(null);
+        setSortBy(null);
+    }
+
     const filtered = destinations
         .filter((d) => !category || d.category === category)
         .filter((d) => matchesPriceRange(d.price, priceRange ?? "all"))
@@ -95,7 +108,11 @@ export function DestinationsGrid({
             <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
                 <Select
                     value={category}
-                    onValueChange={(value) => setCategory(value)}
+                    onValueChange={(value) =>
+                        // "All Categories" clears the filter rather than
+                        // matching a literal category named "all".
+                        setCategory(value === "all" ? null : value)
+                    }
                 >
                     <SelectTrigger className={filterTriggerClass}>
                         <SelectValue placeholder="Category" />
@@ -165,9 +182,10 @@ export function DestinationsGrid({
                                 sizes="(min-width: 1024px) 411px, (min-width: 640px) 50vw, 100vw"
                                 className="aspect-411/231 h-auto w-full rounded-none! object-cover"
                             />
-                            {/* Design rating badge: white 82x40, inset 20px */}
+                            {/* Design rating badge: white 82x40, inset 20px.
+                                Shows the API rating; "New" until reviews exist. */}
                             <span className="absolute top-5 right-5 flex h-10 w-20 items-center justify-center gap-1.5 bg-white text-base font-medium text-[#121212]">
-                                4.5
+                                {destination.rating ?? "New"}
                                 <Star className="size-5 fill-[#121212] text-[#121212]" />
                             </span>
                         </div>
@@ -208,9 +226,28 @@ export function DestinationsGrid({
                 ))}
 
                 {filtered.length === 0 && (
-                    <p className="text-xl text-[#6c696d]">
-                        No destinations found.
-                    </p>
+                    <div className="col-span-full flex flex-col items-center gap-3 py-16 text-center">
+                        <MapPin className="size-10 text-[#b6b6b6]" />
+                        <p className="text-2xl font-medium tracking-[-0.015em] text-[#0c0b0b]">
+                            No destinations found
+                        </p>
+                        <p className="text-base text-[#6c696d]">
+                            {destinations.length === 0
+                                ? "Check back soon — new trips are added all the time."
+                                : "Try adjusting your filters to see more results."}
+                        </p>
+                        {hasActiveFilters && (
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={clearFilters}
+                                className="mt-2 h-12 gap-2 rounded-none border-[#b6b6b6] px-6 text-base font-medium tracking-[0.08px] text-[#0c0b0b] hover:border-[#15a1bf] hover:text-[#15a1bf]"
+                            >
+                                <RotateCcw className="size-5" />
+                                Clear filters
+                            </Button>
+                        )}
+                    </div>
                 )}
             </div>
         </>

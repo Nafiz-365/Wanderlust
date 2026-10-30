@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const searchFields = [
     {
@@ -62,7 +63,7 @@ export function Banner() {
                     16px uppercase label — overrides of the shadcn Button. */}
                 <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
                     <Button
-                        render={<a href="/destinations" />}
+                        render={<Link href="/destinations" />}
                         nativeButton={false}
                         className="h-14 w-full gap-6 rounded-none bg-[#15a1bf] px-6 text-base tracking-[0.08px] uppercase text-white hover:bg-[#128da5] sm:w-auto"
                     >
@@ -71,7 +72,7 @@ export function Banner() {
                     </Button>
 
                     <Button
-                        render={<a href="/destinations" />}
+                        render={<Link href="/destinations" />}
                         nativeButton={false}
                         className="h-14 w-full rounded-none bg-white/40 px-6 text-base tracking-[0.08px] uppercase text-white hover:bg-white/55 sm:w-auto"
                     >
